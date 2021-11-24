@@ -29,6 +29,12 @@ class WelcomeController extends Controller
         return view('dashboard.welcome', compact('categories_count', 'products_count', 'clients_count', 'users_count', 'sales_data'));
 
     }//end of index
+    public function about()
+    {
+        return view('dashboard.about.about');
+
+
+    }
 
 
 }//end of controller

@@ -1,86 +1,96 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>AdminLTE 2 | Log in</title>
+	<!-- Basic Page Info -->
+	<meta charset="utf-8">
+	<title>POS SYSTEM</title>
 
-    {{--<!-- Bootstrap 3.3.7 -->--}}
-    <link rel="stylesheet" href="{{ asset('dashboard_files/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('dashboard_files/css/ionicons.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('dashboard_files/css/skin-blue.min.css') }}">
+	<!-- Site favicon -->
+	<link rel="apple-touch-icon" sizes="180x180"  href="{{asset('uploads/logo/logo.png')}}">
+	<link rel="icon" type="image/png" sizes="32x32"  href="{{asset('uploads/logo/logo.png')}}">
+	<link rel="icon" type="image/png" sizes="16x16" href="{{asset('uploads/logo/logo.png')}}">
 
-    @if (app()->getLocale() == 'ar')
-        <link rel="stylesheet" href="{{ asset('dashboard_files/css/font-awesome-rtl.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('dashboard_files/css/AdminLTE-rtl.min.css') }}">
-        <link href="https://fonts.googleapis.com/css?family=Cairo:400,700" rel="stylesheet">
-        <link rel="stylesheet" href="{{ asset('dashboard_files/css/bootstrap-rtl.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('dashboard_files/css/rtl.css') }}">
+	<!-- Mobile Specific Metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-        <style>
-            body, h1, h2, h3, h4, h5, h6 {
-                font-family: 'Cairo', sans-serif !important;
-            }
-        </style>
-    @else
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-        <link rel="stylesheet" href="{{ asset('dashboard_files/css/font-awesome.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('dashboard_files/css/AdminLTE.min.css') }}">
-    @endif
+	<!-- Google Font -->
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" href="{{ asset('backend/vendors/styles/core.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('backend/vendors/styles/icon-font.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('backend/vendors/styles/style.css')}}">
 
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-119386393-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
 
+		gtag('config', 'UA-119386393-1');
+	</script>
 </head>
 <body class="login-page">
-
-<div class="login-box">
-
-    <div class="login-logo">
-        <a href="../../index2.html"><b>Admin</b>LTE</a>
-    </div><!-- end of login lgo -->
-
-    <div class="login-box-body">
-        <p class="login-box-msg">Sign in to start your session</p>
-
-        <form action="{{ route('login') }}" method="post">
-            {{ csrf_field() }}
-            {{ method_field('post') }}
-
-            @include('partials._errors')
-
-            <div class="form-group has-feedback">
-                <input type="email" name="email" class="form-control" placeholder="@lang('site.email')">
-                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+	<div class="login-header box-shadow">
+		<div class="container-fluid d-flex justify-content-between align-items-center">
+			<div class="brand-logo">
+               <a href="#">
+                <div class="brand-text brand-big visible text-uppercase"><i class="icon-copy fi-star text-primary"></i><strong class="text-primary">   POS</strong><strong class="text-info">SYSTEM</strong></div>
+               </a>
             </div>
+		</div>
+	</div>
+	<div class="login-wrap d-flex align-items-center flex-wrap justify-content-center">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-md-6 col-lg-7">
+					<img src="{{ asset('backend/vendors/images/login-page-img.png')}}" alt="">
+				</div>
+				<div class="col-md-6 col-lg-5">
+					<div class="login-box bg-white box-shadow border-radius-10">
+						<div class="login-title">
+							<h2 class="text-center text-primary">Se connecter à POS SYSTEM</h2>
+						</div>
+						<form action="{{ route('login') }}" method="post">
+                            {{ csrf_field() }}
+                            {{ method_field('post') }}
+							@include('partials._errors')
+							<div class="input-group custom">
+								<input type="email" name="email" class="form-control form-control-lg" placeholder="Email">
+								<div class="input-group-append custom">
+									<span class="input-group-text"><i class="icon-copy dw dw-user1"></i></span>
+								</div>
+							</div>
+							<div class="input-group custom">
+								<input type="password" name="password" class="form-control form-control-lg" placeholder="**********">
+								<div class="input-group-append custom">
+									<span class="input-group-text"><i class="dw dw-padlock1"></i></span>
+								</div>
+							</div>
+							<div class="row pb-30">
+								<div class="col-6">
+									<div class="custom-control custom-checkbox">
+										<input type="checkbox" name="remember" class="custom-control-input" id="customCheck1">
+										<label class="custom-control-label" for="customCheck1">Remember</label>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12">
+									<button type="submit" class="btn btn-primary btn-lg btn-block" style="color: honeydew">Connexion</button>
 
-            <div class="form-group has-feedback">
-                <input type="password" name="password" class="form-control" placeholder="@lang('site.password')">
-                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-            </div>
-
-            <div class="form-group">
-                <label style="font-weight: normal;"><input type="checkbox" name="remember"> @lang('site.remember_me')</label>
-            </div>
-
-            <button type="submit" class="btn btn-primary btn-block btn-flat">@lang('site.login')</button>
-
-        </form><!-- end of form -->
-
-    </div><!-- end of login body -->
-
-</div><!-- end of login-box -->
-
-{{--<!-- jQuery 3 -->--}}
-<script src="{{ asset('dashboard_files/js/jquery.min.js') }}"></script>
-
-{{--<!-- Bootstrap 3.3.7 -->--}}
-<script src="{{ asset('dashboard_files/js/bootstrap.min.js') }}"></script>
-
-{{--icheck--}}
-<script src="{{ asset('dashboard_files/plugins/icheck/icheck.min.js') }}"></script>
-
-{{--<!-- FastClick -->--}}
-<script src="{{ asset('dashboard_files/js/fastclick.js') }}"></script>
-
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- js -->
+	<script src="{{ asset('backend/vendors/scripts/core.js')}}"></script>
+	<script src="{{ asset('backend/vendors/scripts/script.min.js')}}"></script>
+	<script src="{{ asset('backend/vendors/scripts/process.js')}}"></script>
+	<script src="{{ asset('backend/vendors/scripts/layout-settings.js')}}"></script>
 </body>
 </html>

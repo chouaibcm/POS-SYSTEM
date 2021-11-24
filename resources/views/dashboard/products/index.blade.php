@@ -1,123 +1,176 @@
 @extends('layouts.dashboard.app')
+@section('style')
+
+    <style>
+        .fifty-chars {
+            overflow: hidden;
+            display: block;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            /* number of lines to show */
+            -webkit-box-orient: vertical;
+        }
+
+    </style>
+
+@endsection
 
 @section('content')
 
     <div class="content-wrapper">
 
         <section class="content-header">
+            <div class="page-header">
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="title">
 
-            <h1>@lang('site.products')</h1>
+                            <h1>Les produits</h1>
+                        </div>
+                        <nav aria-label="breadcrumb" role="navigation">
 
-            <ol class="breadcrumb">
-                <li><a href="{{ route('dashboard.welcome') }}"><i class="fa fa-dashboard"></i> @lang('site.dashboard')</a></li>
-                <li class="active">@lang('site.products')</li>
-            </ol>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item active"><a href="{{ route('dashboard.welcome') }}"><i
+                                            class="fa fa-dashboard"></i> Accueil</a></li>
+                                <li class="breadcrumb-item active">Les produits</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
         </section>
 
         <section class="content">
 
-            <div class="box box-primary">
+            <div class="card-box pb-10">
+                <div class="container">
 
-                <div class="box-header with-border">
+                    <div class="card-header with-border box-shadow">
 
-                    <h3 class="box-title" style="margin-bottom: 15px">@lang('site.products') <small>{{ $products->total() }}</small></h3>
+                        <h3 class="card-title" style="margin-bottom: 15px">Les produits
+                            <small>{{ $products->total() }}</small>
+                        </h3>
 
-                    <form action="{{ route('dashboard.products.index') }}" method="get">
+                        <form action="{{ route('dashboard.products.index') }}" method="get">
 
-                        <div class="row">
+                            <div class="row">
 
-                            <div class="col-md-4">
-                                <input type="text" name="search" class="form-control" placeholder="@lang('site.search')" value="{{ request()->search }}">
+                                <div class="col-md-4">
+                                    <input type="text" name="search" class="form-control" placeholder="Rechercher"
+                                        value="{{ request()->search }}">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <select name="category_id" class="form-control">
+                                        <option value="">Tous les catégories</option>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}"
+                                                {{ request()->category_id == $category->id ? 'selected' : '' }}>
+                                                {{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i>
+                                        Rechercher</button>
+                                    @if (auth()
+            ->user()
+            ->hasPermission('create_products'))
+                                        <a href="{{ route('dashboard.products.create') }}" class="btn btn-primary"><i
+                                                class="fa fa-plus"></i> Ajouter</a>
+                                    @else
+                                        <a href="#" class="btn btn-primary disabled"><i class="fa fa-plus"></i> Ajouter</a>
+                                    @endif
+                                </div>
+
                             </div>
+                        </form><!-- end of form -->
 
-                            <div class="col-md-4">
-                                <select name="category_id" class="form-control">
-                                    <option value="">@lang('site.all_categories')</option>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}" {{ request()->category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                    </div><!-- end of box header -->
+
+                    <div class="card-box-body pb-10">
+
+                        @if ($products->count() > 0)
+
+                            <table class="data-table table nowrap">
+
+                                <thead>
+                                    <tr>
+                                        <th class="datatable-nosort">#</th>
+                                        <th>Le nom</th>
+                                        <th class="datatable-nosort">La catégorie</th>
+                                        <th class="datatable-nosort">Image</th>
+                                        <th>Prix de vente</th>
+                                        <th>Le stoke</th>
+                                        <th class="datatable-nosort">Action</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach ($products as $index => $product)
+                                        <tr>
+                                            <td>{{ $index + 1 }}</td>
+                                            <td>{{ $product->name }}</td>
+                                            <td>{{ $product->category->name }}</td>
+                                            <td><img src="{{ $product->image_path }}" style="width: 100px"
+                                                    class="img-thumbnail" alt=""></td>
+                                            <td>{{ $product->sale_price }}</td>
+                                            <td>{{ $product->stock }}</td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle"
+                                                        href="#" role="button" data-toggle="dropdown">
+                                                        <i class="dw dw-more"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('dashboard.products.show', $product->id) }}"><i
+                                                                class="dw dw-eye"></i> Afficher</a>
+                                                        @if (auth()->user()->hasPermission('update_products'))
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('dashboard.products.edit', $product->id) }}">
+                                                                <i class="dw dw-edit2"></i> Modifier</a>
+                                                        @else
+                                                            <a class="dropdown-item disabled"
+                                                                href="{{ route('dashboard.products.edit', $product->id) }}">
+                                                                <i class="dw dw-edit2"></i> Modifier</a>
+
+                                                        @endif
+                                                        @if (auth()->user()->hasPermission('delete_products'))
+                                                        <form id="sup-form" action="{{ route('dashboard.products.destroy', $product->id) }}" method="POST" style="display: inline-block">
+                                                            {{ csrf_field() }}
+                                                        {{ method_field('delete') }}
+                                                        <a class="dropdown-item delete" href="{{ route('dashboard.products.destroy', $product->id) }}"><i class="dw dw-delete-3"></i>
+                                                            Supprimer</a>
+                                                            </form>
+                                                        @else
+                                                        <a class="dropdown-item disabled" href="#"><i class="dw dw-delete-3"></i>
+                                                            Supprimer</a>
+                                                        @endif
+                                                    </div>
+                                                </div>                                                
+                                            </td>
+                                        </tr>
+
                                     @endforeach
-                                </select>
-                            </div>
-                            
-                            <div class="col-md-4">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> @lang('site.search')</button>
-                                @if (auth()->user()->hasPermission('create_products'))
-                                    <a href="{{ route('dashboard.products.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</a>
-                                @else
-                                    <a href="#" class="btn btn-primary disabled"><i class="fa fa-plus"></i> @lang('site.add')</a>
-                                @endif
-                            </div>
+                                </tbody>
 
-                        </div>
-                    </form><!-- end of form -->
+                            </table><!-- end of table -->
 
-                </div><!-- end of box header -->
+                            {{ $products->appends(request()->query())->links() }}
 
-                <div class="box-body">
+                        @else
 
-                    @if ($products->count() > 0)
+                            <h2>Aucune donnée disponible</h2>
 
-                        <table class="table table-hover">
+                        @endif
 
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>@lang('site.name')</th>
-                                <th>@lang('site.description')</th>
-                                <th>@lang('site.category')</th>
-                                <th>@lang('site.image')</th>
-                                <th>@lang('site.purchase_price')</th>
-                                <th>@lang('site.sale_price')</th>
-                                <th>@lang('site.profit_percent') %</th>
-                                <th>@lang('site.stock')</th>
-                                <th>@lang('site.action')</th>
-                            </tr>
-                            </thead>
-                            
-                            <tbody>
-                            @foreach ($products as $index=>$product)
-                                <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ $product->name }}</td>
-                                    <td>{!! $product->description !!}</td>
-                                    <td>{{ $product->category->name }}</td>
-                                    <td><img src="{{ $product->image_path }}" style="width: 100px"  class="img-thumbnail" alt=""></td>
-                                    <td>{{ $product->purchase_price }}</td>
-                                    <td>{{ $product->sale_price }}</td>
-                                    <td>{{ $product->profit_percent }} %</td>
-                                    <td>{{ $product->stock }}</td>
-                                    <td>
-                                        @if (auth()->user()->hasPermission('update_products'))
-                                            <a href="{{ route('dashboard.products.edit', $product->id) }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
-                                        @else
-                                            <a href="#" class="btn btn-info btn-sm disabled"><i class="fa fa-edit"></i> @lang('site.edit')</a>
-                                        @endif
-                                        @if (auth()->user()->hasPermission('delete_products'))
-                                            <form action="{{ route('dashboard.products.destroy', $product->id) }}" method="post" style="display: inline-block">
-                                                {{ csrf_field() }}
-                                                {{ method_field('delete') }}
-                                                <button type="submit" class="btn btn-danger delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
-                                            </form><!-- end of form -->
-                                        @else
-                                            <button class="btn btn-danger btn-sm disabled"><i class="fa fa-trash"></i> @lang('site.delete')</button>
-                                        @endif
-                                    </td>
-                                </tr>
-                            
-                            @endforeach
-                            </tbody>
+                    </div><!-- end of box body -->
 
-                        </table><!-- end of table -->
-                        
-                        {{ $products->appends(request()->query())->links() }}
-                        
-                    @else
-                        
-                        <h2>@lang('site.no_data_found')</h2>
-                        
-                    @endif
-
-                </div><!-- end of box body -->
+                </div>
 
 
             </div><!-- end of box -->

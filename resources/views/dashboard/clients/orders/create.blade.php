@@ -5,14 +5,28 @@
     <div class="content-wrapper">
 
         <section class="content-header">
+            <div class="page-header">
 
-            <h1>@lang('site.add_order')</h1>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="title">
 
-            <ol class="breadcrumb">
-                <li><a href="{{ route('dashboard.welcome') }}"><i class="fa fa-dashboard"></i> @lang('site.dashboard')</a></li>
-                <li><a href="{{ route('dashboard.clients.index') }}">@lang('site.clients')</a></li>
-                <li class="active">@lang('site.add_order')</li>
-            </ol>
+                            <h1>Ajouter commande</h1>
+                        </div>
+                        <nav aria-label="breadcrumb" role="navigation">
+
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item "><a href="{{ route('dashboard.welcome') }}"><i
+                                            class="fa fa-dashboard"></i> Accueil
+                                    </a></li>
+                                <li class="breadcrumb-item "><a href="{{ route('dashboard.clients.index') }}">Clients</a>
+                                </li>
+                                <li class="breadcrumb-item active">Ajouter commande</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section class="content">
@@ -21,40 +35,42 @@
 
                 <div class="col-md-6">
 
-                    <div class="box box-primary">
+                    <div class="card-box pb-10">
 
-                        <div class="box-header">
+                        <div class="card-header">
 
-                            <h3 class="box-title" style="margin-bottom: 10px">@lang('site.categories')</h3>
+                            <h3 class="card-title" style="margin-bottom: 10px">Catégories</h3>
 
                         </div><!-- end of box header -->
 
-                        <div class="box-body">
+                        <div class="card-body">
 
                             @foreach ($categories as $category)
-                                
+
                                 <div class="panel-group">
 
                                     <div class="panel panel-info">
 
                                         <div class="panel-heading">
                                             <h4 class="panel-title">
-                                                <a data-toggle="collapse" href="#{{ str_replace(' ', '-', $category->name) }}">{{ $category->name }}</a>
+                                                <a data-toggle="collapse"
+                                                    href="#{{ str_replace(' ', '-', $category->name) }}">{{ $category->name }}</a>
                                             </h4>
                                         </div>
 
-                                        <div id="{{ str_replace(' ', '-', $category->name) }}" class="panel-collapse collapse">
+                                        <div id="{{ str_replace(' ', '-', $category->name) }}"
+                                            class="panel-collapse collapse">
 
                                             <div class="panel-body">
 
                                                 @if ($category->products->count() > 0)
 
-                                                    <table class="table table-hover">
+                                                    <table class="data-table-nosort table nowrap">
                                                         <tr>
-                                                            <th>@lang('site.name')</th>
-                                                            <th>@lang('site.stock')</th>
-                                                            <th>@lang('site.price')</th>
-                                                            <th>@lang('site.add')</th>
+                                                            <th>Le nom</th>
+                                                            <th>Le stock</th>
+                                                            <th>Le prix</th>
+                                                            <th>Ajouter</th>
                                                         </tr>
 
                                                         @foreach ($category->products as $product)
@@ -63,12 +79,11 @@
                                                                 <td>{{ $product->stock }}</td>
                                                                 <td>{{ number_format($product->sale_price, 2) }}</td>
                                                                 <td>
-                                                                    <a href=""
-                                                                       id="product-{{ $product->id }}"
-                                                                       data-name="{{ $product->name }}"
-                                                                       data-id="{{ $product->id }}"
-                                                                       data-price="{{ $product->sale_price }}"
-                                                                       class="btn btn-success btn-sm add-product-btn">
+                                                                    <a href="" id="product-{{ $product->id }}"
+                                                                        data-name="{{ $product->name }}"
+                                                                        data-id="{{ $product->id }}"
+                                                                        data-price="{{ $product->sale_price }}"
+                                                                        class="btn btn-success btn-sm add-product-btn">
                                                                         <i class="fa fa-plus"></i>
                                                                     </a>
                                                                 </td>
@@ -78,7 +93,7 @@
                                                     </table><!-- end of table -->
 
                                                 @else
-                                                    <h5>@lang('site.no_records')</h5>
+                                                    <h5>Aucune donnée disponible</h5>
                                                 @endif
 
                                             </div><!-- end of panel body -->
@@ -99,15 +114,15 @@
 
                 <div class="col-md-6">
 
-                    <div class="box box-primary">
+                    <div class="card-box pb-10">
 
-                        <div class="box-header">
+                        <div class="card-header">
 
-                            <h3 class="box-title">@lang('site.orders')</h3>
+                            <h3 class="card-title">Les commandes</h3>
 
                         </div><!-- end of box header -->
 
-                        <div class="box-body">
+                        <div class="card-body">
 
                             <form action="{{ route('dashboard.clients.orders.store', $client->id) }}" method="post">
 
@@ -116,13 +131,13 @@
 
                                 @include('partials._errors')
 
-                                <table class="table table-hover">
+                                <table class="data-table-nosort table nowrap">
                                     <thead>
-                                    <tr>
-                                        <th>@lang('site.product')</th>
-                                        <th>@lang('site.quantity')</th>
-                                        <th>@lang('site.price')</th>
-                                    </tr>
+                                        <tr>
+                                            <th>Le produits</th>
+                                            <th>Quantité</th>
+                                            <th>Le prix</th>
+                                        </tr>
                                     </thead>
 
                                     <tbody class="order-list">
@@ -132,60 +147,47 @@
 
                                 </table><!-- end of table -->
 
-                                <h4>@lang('site.total') : <span class="total-price">0</span></h4>
+                                <h4>Total : <span class="total-price">0</span></h4>
 
-                                <button class="btn btn-primary btn-block disabled" id="add-order-form-btn"><i class="fa fa-plus"></i> @lang('site.add_order')</button>
+                                <button class="btn btn-primary btn-block disabled" id="add-order-form-btn"><i
+                                        class="fa fa-plus"></i> Ajouter commande</button>
 
                             </form>
 
                         </div><!-- end of box body -->
 
                     </div><!-- end of box -->
-
                     @if ($client->orders->count() > 0)
 
-                        <div class="box box-primary">
 
-                            <div class="box-header">
 
-                                <h3 class="box-title" style="margin-bottom: 10px">@lang('site.previous_orders')
+                        <div class="card-box pb-10 mt-2">
+
+                            <div class="card-header">
+                                <h5 class="card-title" style="margin-bottom: 10px">Les Commandes précédentes
                                     <small>{{ $orders->total() }}</small>
-                                </h3>
+                                </h5>
 
                             </div><!-- end of box header -->
 
-                            <div class="box-body">
+                            <div class="card-body">
 
                                 @foreach ($orders as $order)
 
-                                    <div class="panel-group">
 
-                                        <div class="panel panel-success">
-
-                                            <div class="panel-heading">
-                                                <h4 class="panel-title">
-                                                    <a data-toggle="collapse" href="#{{ $order->created_at->format('d-m-Y-s') }}">{{ $order->created_at->toFormattedDateString() }}</a>
-                                                </h4>
-                                            </div>
-
-                                            <div id="{{ $order->created_at->format('d-m-Y-s') }}" class="panel-collapse collapse">
-
-                                                <div class="panel-body">
-
-                                                    <ul class="list-group">
-                                                        @foreach ($order->products as $product)
-                                                            <li class="list-group-item">{{ $product->name }}</li>
-                                                        @endforeach
-                                                    </ul>
-
-                                                </div><!-- end of panel body -->
-
-                                            </div><!-- end of panel collapse -->
-
-                                        </div><!-- end of panel primary -->
-
-                                    </div><!-- end of panel group -->
-
+                                    <div class="dropdown">
+                                        <a class=" dropdown-toggle" href="#" data-toggle="dropdown">
+                                            {{ $order->created_at->toFormattedDateString() }}
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            @foreach ($order->products as $product)
+                                                <ul>
+                                                    <li class="dropdown-item">{{ $product->name }}</li>
+                                                </ul>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                 
                                 @endforeach
 
                                 {{ $orders->links() }}
@@ -195,6 +197,8 @@
                         </div><!-- end of box -->
 
                     @endif
+
+
 
                 </div><!-- end of col -->
 

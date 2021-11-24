@@ -4,23 +4,38 @@
 
     <div class="content-wrapper">
         <section class="content-header">
-            <h1>@lang('site.clients')</h1>
+            <div class="page-header">
 
-            <ol class="breadcrumb">
-                <li><a href="{{ route('dashboard.welcome') }}"><i class="fa fa-dashboard"></i> @lang('site.dashboard')</a></li>
-                <li><a href="{{ route('dashboard.clients.index') }}"> @lang('site.clients')</a></li>
-                <li class="active">@lang('site.add')</li>
-            </ol>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="title">
+                            <h1>Les clients</h1>
+                        </div>
+                        <nav aria-label="breadcrumb" role="navigation">
+
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item "><a href="{{ route('dashboard.welcome') }}"><i
+                                            class="fa fa-dashboard"></i> Accueil
+                                    </a></li>
+                                <li class="breadcrumb-item "><a href="{{ route('dashboard.clients.index') }}"> Les
+                                        clients</a></li>
+                                <li class="breadcrumb-item active">Ajouter</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
         </section>
 
         <section class="content">
 
-            <div class="box box-primary">
+            <div class="card-box pb-10">
 
-                <div class="box-header">
-                    <h3 class="box-title">@lang('site.add')</h3>
+                <div class="card-header">
+                    <h3 class="card-title">Ajouter</h3>
                 </div><!-- end of box header -->
-                <div class="box-body">
+                <div class="card-body">
 
                     @include('partials._errors')
 
@@ -28,26 +43,26 @@
 
                         {{ csrf_field() }}
                         {{ method_field('post') }}
-                        
+
                         <div class="form-group">
-                            <label>@lang('site.name')</label>
+                            <label>Le nom</label>
                             <input type="text" name="name" class="form-control" value="{{ old('name') }}">
                         </div>
 
-                       @for ($i = 0; $i < 2; $i++)
+                        @for ($i = 0; $i < 2; $i++)
                             <div class="form-group">
-                                <label>@lang('site.phone')</label>
+                                <label>Numéro de télephone</label>
                                 <input type="text" name="phone[]" class="form-control">
                             </div>
-                       @endfor
+                        @endfor
 
                         <div class="form-group">
-                            <label>@lang('site.address')</label>
+                            <label>L'adresse</label>
                             <textarea name="address" class="form-control">{{ old('address') }}</textarea>
                         </div>
-                        
+
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Ajouter</button>
                         </div>
 
                     </form><!-- end of form -->

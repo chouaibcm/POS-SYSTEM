@@ -45,14 +45,13 @@ class UserController extends Controller
 
     }//end of create
 
-    public
-    function store(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|unique:users',
-            'image' => 'image',
+            'image' => 'mimes:jpeg,jpg,png',
             'password' => 'required|confirmed',
             'permissions' => 'required|min:1'
         ]);
@@ -77,7 +76,7 @@ class UserController extends Controller
         $user->syncPermissions($request->permissions);
 
         session()->flash('success', __('site.added_successfully'));
-        return redirect()->route('dashboard.users.index');
+        return redirect()->Route('dashboard.users.index');
 
     }//end of store
 
@@ -95,7 +94,7 @@ class UserController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => ['required', Rule::unique('users')->ignore($user->id),],
-            'image' => 'image',
+            'image' => 'mimes:jpeg,jpg,png',
             'permissions' => 'required|min:1'
         ]);
 

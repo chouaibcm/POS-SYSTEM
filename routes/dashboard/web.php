@@ -12,7 +12,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
             Route::resource('categories', 'CategoryController')->except(['show']);
 
             //product routes
-            Route::resource('products', 'ProductController')->except(['show']);
+            Route::resource('products', 'ProductController');
 
             //client routes
             Route::resource('clients', 'ClientController')->except(['show']);
@@ -25,7 +25,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['lo
 
             //user routes
             Route::resource('users', 'UserController')->except(['show']);
-            Route::get('/admin', 'AdminController@index')->name('admin');
+
+            //about
+
+            Route::get('/about', 'WelcomeController@about')->name('about');
 
 
         });//end of dashboard routes

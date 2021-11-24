@@ -17,8 +17,8 @@ class ProductsTableSeeder extends Seeder
 
             \App\Product::create([
                 'category_id' => 1,
-                'ar' => ['name' => $product, 'description' => $product . ' desc'],
-                'en' => ['name' => $product, 'description' => $product . ' desc'],
+                'name'=> $product,
+                'description'=> $product,
                 'purchase_price' => 100,
                 'sale_price' => 150,
                 'stock' => 100,

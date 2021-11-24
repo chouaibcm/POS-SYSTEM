@@ -49,7 +49,7 @@ return [
 
     'permissions' => 'الصلاحيات',
 
-    'categories' => 'الاقسام',
+    'categories' => 'Catégories',
     'all_categories' => 'كل الاقسام',
     'name' => 'الاسم',
     'description' => 'الوصف',

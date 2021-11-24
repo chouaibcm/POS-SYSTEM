@@ -4,116 +4,128 @@
 
     <div class="content-wrapper">
 
-        <section class="content-header">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="title">
+                        <h2>Les clients (<small>{{ $clients->total() }}</small>)</h2>
+                    </div>
+                    <nav aria-label="breadcrumb" role="navigation">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard.welcome') }}"><i
+                                        class="fa fa-dashboard"></i> Accueil
+                                </a></li>
+                            <li class="breadcrumb-item active">Les clients</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
 
-            <h1>@lang('site.clients')</h1>
 
-            <ol class="breadcrumb">
-                <li><a href="{{ route('dashboard.welcome') }}"><i class="fa fa-dashboard"></i> @lang('site.dashboard')</a></li>
-                <li class="active">@lang('site.clients')</li>
-            </ol>
-        </section>
+            <section class="content">
 
-        <section class="content">
-
-            <div class="box box-primary">
-
-                <div class="box-header with-border">
-
-                    <h3 class="box-title" style="margin-bottom: 15px">@lang('site.clients') <small>{{ $clients->total() }}</small></h3>
-
+                <div class="card-box pb-10">
                     <form action="{{ route('dashboard.clients.index') }}" method="get">
-
                         <div class="row">
-
-                            <div class="col-md-4">
-                                <input type="text" name="search" class="form-control" placeholder="@lang('site.search')" value="{{ request()->search }}">
+                            <div class="col-md-5 col-sm-12 mb-20 pd-20">
+                                <input type="text" name="search" class="form-control search-input" placeholder="Rechercher"
+                                    value="{{ request()->search }}">
                             </div>
-
-                            <div class="col-md-4">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> @lang('site.search')</button>
-                                @if (auth()->user()->hasPermission('create_clients'))
-                                    <a href="{{ route('dashboard.clients.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</a>
+                            <div class="col-md-5 col-sm-12 mb-20 pd-20">
+                                <button type="submit" class="btn btn-info"><i class="fa fa-search"></i>Chercher</button>
+                                @if (auth()
+            ->user()
+            ->hasPermission('create_clients'))
+                                    <a href="{{ route('dashboard.clients.create') }}" class="btn btn-info"><i
+                                            class="fa fa-plus"></i>Ajouter</a>
                                 @else
-                                    <a href="#" class="btn btn-primary disabled"><i class="fa fa-plus"></i> @lang('site.add')</a>
+                                    <a href="#" class="btn btn-info disabled"><i class="fa fa-plus"></i>
+                                        @lang('site.add')</a>
                                 @endif
                             </div>
-
                         </div>
-                    </form><!-- end of form -->
-
-                </div><!-- end of box header -->
-
-                <div class="box-body">
-
+                    </form>
                     @if ($clients->count() > 0)
-
-                        <table class="table table-hover">
-
+                    <div class="table-responsive-sm">
+                        <table class="data-table table nowrap">
                             <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>@lang('site.name')</th>
-                                <th>@lang('site.phone')</th>
-                                <th>@lang('site.address')</th>
-                                <th>@lang('site.add_order')</th>
-                                <th>@lang('site.action')</th>
-                            </tr>
-                            </thead>
-                            
-                            <tbody>
-                            @foreach ($clients as $index=>$client)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ $client->name }}</td>
-                                    <td>{{ is_array($client->phone) ? implode($client->phone, '-') : $client->phone }}</td>
-                                    <td>{{ $client->address }}</td>
-                                    <td>
-                                        @if (auth()->user()->hasPermission('create_orders'))
-                                            <a href="{{ route('dashboard.clients.orders.create', $client->id) }}" class="btn btn-primary btn-sm">@lang('site.add_order')</a>
-                                        @else
-                                            <a href="#" class="btn btn-primary btn-sm disabled">@lang('site.add_order')</a>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if (auth()->user()->hasPermission('update_clients'))
-                                            <a href="{{ route('dashboard.clients.edit', $client->id) }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
-                                        @else
-                                            <a href="#" class="btn btn-info btn-sm disabled"><i class="fa fa-edit"></i> @lang('site.edit')</a>
-                                        @endif
-                                        @if (auth()->user()->hasPermission('delete_clients'))
-                                            <form action="{{ route('dashboard.clients.destroy', $client->id) }}" method="post" style="display: inline-block">
-                                                {{ csrf_field() }}
-                                                {{ method_field('delete') }}
-                                                <button type="submit" class="btn btn-danger delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
-                                            </form><!-- end of form -->
-                                        @else
-                                            <button class="btn btn-danger btn-sm disabled"><i class="fa fa-trash"></i> @lang('site.delete')</button>
-                                        @endif
-                                    </td>
+                                    <th>#</th>
+                                    <th>Le nom</th>
+                                    <th>Le numéro de téléphone</th>
+                                    <th>L'adresse</th>
+                                    <th class="datatable-nosort">Ajouter nommande</th>
+                                    <th class="datatable-nosort">Action</th>
                                 </tr>
-                            
-                            @endforeach
+                            </thead>
+
+                            <tbody>
+                                @foreach ($clients as $index => $client)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $client->name }}</td>
+                                        <td>{{ is_array($client->phone) ? implode($client->phone, '-') : $client->phone }}
+                                        </td>
+                                        <td>{{ $client->address }}</td>
+                                        <td>
+                                            @if (auth()->user()->hasPermission('create_orders'))
+                                                <a href="{{ route('dashboard.clients.orders.create', $client->id) }}"
+                                                    class="btn btn-primary btn-sm">Ajouter commande</a>
+                                            @else
+                                                <a href="#" class="btn btn-primary btn-sm disabled">Ajouter commande</a>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle"
+                                                    href="#" role="button" data-toggle="dropdown">
+                                                    <i class="dw dw-more"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                                    @if (auth()->user()->hasPermission('update_clients'))
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('dashboard.clients.edit', $client->id) }}">
+                                                            <i class="dw dw-edit2"></i> Modifier</a>
+                                                    @else
+                                                        <a class="dropdown-item disabled"
+                                                            href="#">
+                                                            <i class="dw dw-edit2"></i> Modifier</a>
+
+                                                    @endif
+                                                    @if (auth()->user()->hasPermission('delete_clients'))
+                                                    <form id="sup-form" action="{{ route('dashboard.clients.destroy', $client->id) }}" method="POST" style="display: inline-block">
+                                                        {{ csrf_field() }}
+                                                    {{ method_field('delete') }}
+                                                    <a class="dropdown-item delete" href="{{ route('dashboard.clients.destroy', $client->id) }}"><i class="dw dw-delete-3"></i>
+                                                        Supprimer</a>
+                                                        </form>
+                                                    @else
+                                                    <a class="dropdown-item disabled" href="#"><i class="dw dw-delete-3"></i>
+                                                        Supprimer</a>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                @endforeach
                             </tbody>
 
-                        </table><!-- end of table -->
-                        
+
+                        </table>
+                    </div>
                         {{ $clients->appends(request()->query())->links() }}
-                        
                     @else
-                        
-                        <h2>@lang('site.no_data_found')</h2>
-                        
+
+                        <h2>Aucune donnée disponible</h2>
+
                     @endif
+                </div>
+                <!-- end of box -->
 
-                </div><!-- end of box body -->
+            </section><!-- end of content -->
 
-
-            </div><!-- end of box -->
-
-        </section><!-- end of content -->
-
-    </div><!-- end of content wrapper -->
+        </div><!-- end of content wrapper -->
 
 
-@endsection
+    @endsection

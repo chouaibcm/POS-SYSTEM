@@ -1,66 +1,46 @@
-<aside class="main-sidebar">
+<div class="brand-logo">
+    <a href="index.html">
+        <div class="brand-text brand-big visible text-uppercase"><i class="icon-copy fi-star"></i><strong class="text-primary">   POS</strong><strong>SYSTEM</strong></div>
 
-    <section class="sidebar">
-
-
-
-        <ul class="sidebar-menu" data-widget="tree">
-            <li><a href="{{ route('dashboard.welcome') }}"><i class="fa fa-th"></i><span>@lang('site.dashboard')</span></a></li>
-
-            @if (auth()->user()->hasPermission('read_categories'))
-                <li><a href="{{ route('dashboard.categories.index') }}"><i class="fa fa-th"></i><span>@lang('site.categories')</span></a></li>
-            @endif
-
-            @if (auth()->user()->hasPermission('read_products'))
-                <li><a href="{{ route('dashboard.products.index') }}"><i class="fa fa-th"></i><span>@lang('site.products')</span></a></li>
-            @endif
-
-            @if (auth()->user()->hasPermission('read_clients'))
-                <li><a href="{{ route('dashboard.clients.index') }}"><i class="fa fa-th"></i><span>@lang('site.clients')</span></a></li>
-            @endif
-
-            @if (auth()->user()->hasPermission('read_orders'))
-                <li><a href="{{ route('dashboard.orders.index') }}"><i class="fa fa-th"></i><span>@lang('site.orders')</span></a></li>
-            @endif
-
-            @if (auth()->user()->hasPermission('read_users'))
-                <li><a href="{{ route('dashboard.users.index') }}"><i class="fa fa-th"></i><span>@lang('site.users')</span></a></li>
-            @endif
-            @if (auth()->user()->hasPermission('read_users'))
-            <li><a href="{{ route('dashboard.admin') }}"><i class="fa fa-th"></i><span>Admin2</span></a></li>
-        @endif
-
-            {{--<li><a href="{{ route('dashboard.categories.index') }}"><i class="fa fa-book"></i><span>@lang('site.categories')</span></a></li>--}}
-            {{----}}
-            {{----}}
-            {{--<li><a href="{{ route('dashboard.users.index') }}"><i class="fa fa-users"></i><span>@lang('site.users')</span></a></li>--}}
-
-            {{--<li class="treeview">--}}
-            {{--<a href="#">--}}
-            {{--<i class="fa fa-pie-chart"></i>--}}
-            {{--<span>الخرائط</span>--}}
-            {{--<span class="pull-right-container">--}}
-            {{--<i class="fa fa-angle-left pull-right"></i>--}}
-            {{--</span>--}}
-            {{--</a>--}}
-            {{--<ul class="treeview-menu">--}}
-            {{--<li>--}}
-            {{--<a href="../charts/chartjs.html"><i class="fa fa-circle-o"></i> ChartJS</a>--}}
-            {{--</li>--}}
-            {{--<li>--}}
-            {{--<a href="../charts/morris.html"><i class="fa fa-circle-o"></i> Morris</a>--}}
-            {{--</li>--}}
-            {{--<li>--}}
-            {{--<a href="../charts/flot.html"><i class="fa fa-circle-o"></i> Flot</a>--}}
-            {{--</li>--}}
-            {{--<li>--}}
-            {{--<a href="../charts/inline.html"><i class="fa fa-circle-o"></i> Inline charts</a>--}}
-            {{--</li>--}}
-            {{--</ul>--}}
-            {{--</li>--}}
+    </a>
+    <div class="close-sidebar" data-toggle="left-sidebar-close">
+        <i class="ion-close-round"></i>
+    </div>
+</div>
+<div class="menu-block customscroll">
+    <div class="sidebar-menu">
+        <ul id="accordion-menu">
+                <a href="{{ route('dashboard.welcome') }}" class="dropdown-toggle no-arrow">
+                    <span class="micon dw dw-house-1"></span><span class="mtext">L'Accueil </span>
+                </a>
+                @if (auth()->user()->hasPermission('read_categories'))
+                <a href="{{ route('dashboard.categories.index') }}" class="dropdown-toggle no-arrow">
+                    <span class="micon dw dw-list"></span><span class="mtext">Les Catégories</span>
+                </a>
+                @endif
+                @if (auth()->user()->hasPermission('read_products'))
+                <a href="{{ route('dashboard.products.index') }}" class="dropdown-toggle no-arrow">
+                    <span class="micon dw dw-shop"></span><span class="mtext">Les Produits</span>
+                </a>
+                @endif
+                @if (auth()->user()->hasPermission('read_clients'))
+                <a href="{{ route('dashboard.clients.index') }}" class="dropdown-toggle no-arrow">
+                    <span class="micon dw dw-deal"></span><span class="mtext">Les Clients</span>
+                </a>
+                @endif
+                @if (auth()->user()->hasPermission('read_orders'))
+                <a href="{{ route('dashboard.orders.index') }}" class="dropdown-toggle no-arrow">
+                    <span class="micon dw dw-shopping-cart-1"></span><span class="mtext">Les Commandes </span>
+                </a>
+                @endif
+                @if (auth()->user()->hasPermission('read_users'))
+                <a href="{{ route('dashboard.users.index') }}" class="dropdown-toggle no-arrow">
+                    <span class="micon dw dw-user"></span><span class="mtext">Les Modérateurs</span>
+                </a>
+                @endif
+                <a href="{{ route('dashboard.about') }}" class="dropdown-toggle no-arrow mt-5">
+                    <span class="micon dw dw-search2"></span><span class="mtext">A Propos</span>
+                </a>
         </ul>
-
-    </section>
-
-</aside>
-
+    </div>
+</div>

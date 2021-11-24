@@ -4,23 +4,38 @@
 
     <div class="content-wrapper">
         <section class="content-header">
-            <h1>@lang('site.categories')</h1>
+            <div class="page-header">
 
-            <ol class="breadcrumb">
-                <li><a href="{{ route('dashboard.welcome') }}"><i class="fa fa-dashboard"></i> @lang('site.dashboard')</a></li>
-                <li><a href="{{ route('dashboard.categories.index') }}"> @lang('site.categories')</a></li>
-                <li class="active">@lang('site.add')</li>
-            </ol>
+                <div class="row">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="title">
+                            <h1>Les Catégories</h1>
+                        </div>
+
+                        <nav aria-label="breadcrumb" role="navigation">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="{{ route('dashboard.welcome') }}"><i
+                                            class="fa fa-dashboard"></i> Accueil
+                                    </a></li>
+                                <li class="breadcrumb-item"><a href="{{ route('dashboard.categories.index') }}">
+                                    Catégories</a></li>
+                                <li class="breadcrumb-item active">Ajouter</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
         </section>
 
         <section class="content">
 
-            <div class="box box-primary">
+            <div class="card-box pb-10">
 
-                <div class="box-header">
-                    <h3 class="box-title">@lang('site.add')</h3>
+                <div class="card-header">
+                    <h3 class="card-title">Ajouter</h3>
                 </div><!-- end of box header -->
-                <div class="box-body">
+                <div class="card-body">
 
                     @include('partials._errors')
 
@@ -29,15 +44,13 @@
                         {{ csrf_field() }}
                         {{ method_field('post') }}
 
-                        @foreach (config('translatable.locales') as $locale)
-                            <div class="form-group">
-                                <label>@lang('site.' . $locale . '.name')</label>
-                                <input type="text" name="{{ $locale }}[name]" class="form-control" value="{{ old($locale . '.name') }}">
-                            </div>
-                        @endforeach
+                        <div class="form-group">
+                            <label>Le nom de catégorie</label>
+                            <input type="text" name="name" class="form-control" value="">
+                        </div>
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Ajouter</button>
                         </div>
 
                     </form><!-- end of form -->

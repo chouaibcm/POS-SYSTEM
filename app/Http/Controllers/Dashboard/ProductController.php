@@ -39,7 +39,8 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        $rules = [
+
+       /*  $rules = [
             'category_id' => 'required'
         ];
 
@@ -56,7 +57,17 @@ class ProductController extends Controller
             'stock' => 'required',
         ];
 
-        $request->validate($rules);
+        */
+        $request->validate( [
+            'category_id' => 'required',
+            'name' => 'required',
+            'description' => 'required',
+            'image' => 'mimes:jpeg,jpg,png',
+            'purchase_price' => 'required',
+            'sale_price' => 'required',
+            'stock' => 'required',
+        ]);
+
 
         $request_data = $request->all();
 
@@ -70,6 +81,7 @@ class ProductController extends Controller
 
             $request_data['image'] = $request->image->hashName();
 
+
         }//end of if
 
         Product::create($request_data);
@@ -77,6 +89,13 @@ class ProductController extends Controller
         return redirect()->route('dashboard.products.index');
 
     }//end of store
+
+    public function show(Product $product)
+    {
+        $categories = Category::all();
+        return view('dashboard.products.show', compact('categories', 'product'));
+
+    }//end of edit
 
     public function edit(Product $product)
     {
@@ -87,7 +106,7 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-        $rules = [
+      /*   $rules = [
             'category_id' => 'required'
         ];
 
@@ -104,7 +123,16 @@ class ProductController extends Controller
             'stock' => 'required',
         ];
 
-        $request->validate($rules);
+        $request->validate($rules); */
+        $request->validate( [
+            'category_id' => 'required',
+            'name' => 'required',
+            'description' => 'required',
+            'image' => 'mimes:jpeg,jpg,png',
+            'purchase_price' => 'required',
+            'sale_price' => 'required',
+            'stock' => 'required',
+        ]);
 
         $request_data = $request->all();
 
@@ -113,7 +141,7 @@ class ProductController extends Controller
             if ($product->image != 'default.png') {
 
                 Storage::disk('public_uploads')->delete('/product_images/' . $product->image);
-                    
+
             }//end of if
 
             Image::make($request->image)
@@ -125,7 +153,7 @@ class ProductController extends Controller
             $request_data['image'] = $request->image->hashName();
 
         }//end of if
-        
+
         $product->update($request_data);
         session()->flash('success', __('site.updated_successfully'));
         return redirect()->route('dashboard.products.index');

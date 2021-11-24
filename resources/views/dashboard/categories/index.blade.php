@@ -4,108 +4,117 @@
 
     <div class="content-wrapper">
 
-        <section class="content-header">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="title">
+                        <h2>Les Catégories (<small>{{ $categories->total() }}</small>)</h2>
+                    </div>
+                    <nav aria-label="breadcrumb" role="navigation">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{{ route('dashboard.welcome') }}"><i
+                                        class="fa fa-dashboard"></i> Accueil
+                                </a></li>
+                            <li class="breadcrumb-item active">Les Catégories</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
 
-            <h1>@lang('site.categories')</h1>
 
-            <ol class="breadcrumb">
-                <li><a href="{{ route('dashboard.welcome') }}"><i class="fa fa-dashboard"></i> @lang('site.dashboard')</a></li>
-                <li class="active">@lang('site.categories')</li>
-            </ol>
-        </section>
+            <section class="content">
 
-        <section class="content">
-
-            <div class="box box-primary">
-
-                <div class="box-header with-border">
-
-                    <h3 class="box-title" style="margin-bottom: 15px">@lang('site.categories') <small>{{ $categories->total() }}</small></h3>
-
+                <div class="card-box pb-10">
                     <form action="{{ route('dashboard.categories.index') }}" method="get">
-
                         <div class="row">
-
-                            <div class="col-md-4">
-                                <input type="text" name="search" class="form-control" placeholder="@lang('site.search')" value="{{ request()->search }}">
+                            <div class="col-md-5 col-sm-12 mb-20 pd-20">
+                                <input type="text" name="search" class="form-control search-input" placeholder="Rechercher"
+                                    value="{{ request()->search }}">
                             </div>
-
-                            <div class="col-md-4">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> @lang('site.search')</button>
+                            <div class="col-md-5 col-sm-12 mb-20 pd-20">
+                                <button type="submit" class="btn btn-info"><i class="fa fa-search"></i>Chercher</button>
                                 @if (auth()->user()->hasPermission('create_categories'))
-                                    <a href="{{ route('dashboard.categories.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i> @lang('site.add')</a>
+                                    <a href="{{ route('dashboard.categories.create') }}" class="btn btn-info"><i
+                                            class="fa fa-plus"></i>Ajouter</a>
                                 @else
-                                    <a href="#" class="btn btn-primary disabled"><i class="fa fa-plus"></i> @lang('site.add')</a>
+                                    <a href="#" class="btn btn-info disabled"><i class="fa fa-plus"></i>
+                                        @lang('site.add')</a>
                                 @endif
                             </div>
-
                         </div>
-                    </form><!-- end of form -->
-
-                </div><!-- end of box header -->
-
-                <div class="box-body">
-
+                    </form>
                     @if ($categories->count() > 0)
-
-                        <table class="table table-hover">
-
+                        <table class="data-table-nosort table nowrap">
                             <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>@lang('site.name')</th>
-                                <th>@lang('site.products_count')</th>
-                                <th>@lang('site.related_products')</th>
-                                <th>@lang('site.action')</th>
-                            </tr>
-                            </thead>
-                            
-                            <tbody>
-                            @foreach ($categories as $index=>$category)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td>{{ $category->name }}</td>
-                                    <td>{{ $category->products->count() }}</td>
-                                    <td><a href="{{ route('dashboard.products.index', ['category_id' => $category->id]) }}" class="btn btn-info btn-sm">@lang('site.related_products')</a></td>
-                                    <td>
-                                        @if (auth()->user()->hasPermission('update_categories'))
-                                            <a href="{{ route('dashboard.categories.edit', $category->id) }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i> @lang('site.edit')</a>
-                                        @else
-                                            <a href="#" class="btn btn-info btn-sm disabled"><i class="fa fa-edit"></i> @lang('site.edit')</a>
-                                        @endif
-                                        @if (auth()->user()->hasPermission('delete_categories'))
-                                            <form action="{{ route('dashboard.categories.destroy', $category->id) }}" method="post" style="display: inline-block">
-                                                {{ csrf_field() }}
-                                                {{ method_field('delete') }}
-                                                <button type="submit" class="btn btn-danger delete btn-sm"><i class="fa fa-trash"></i> @lang('site.delete')</button>
-                                            </form><!-- end of form -->
-                                        @else
-                                            <button class="btn btn-danger btn-sm disabled"><i class="fa fa-trash"></i> @lang('site.delete')</button>
-                                        @endif
-                                    </td>
+                                    <th>#</th>
+                                    <th class="table-plus">Le nom complet</th>
+                                    <th>Les produits comptent</th>
+                                    <th>Les produits connexes</th>
+                                    <th>Actions</th>
                                 </tr>
-                            
-                            @endforeach
+                            </thead>
+                            <tbody>
+                                @foreach ($categories as $index => $category)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $category->name }}</td>
+                                        <td>{{ $category->products->count() }}</td>
+                                        <td><a href="{{ route('dashboard.products.index', ['category_id' => $category->id]) }}"
+                                                class="btn btn-info btn-sm">Les produits connexes</a></td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle"
+                                                    href="#" role="button" data-toggle="dropdown">
+                                                    <i class="dw dw-more"></i>
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+
+                                                    @if (auth()->user()->hasPermission('update_categories'))
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('dashboard.categories.edit', $category->id) }}">
+                                                            <i class="dw dw-edit2"></i> Modifier</a>
+                                                    @else
+                                                        <a class="dropdown-item disabled" href="#">
+                                                            <i class="dw dw-edit2"></i> Modifier</a>
+
+                                                    @endif
+                                                    @if (auth()->user()->hasPermission('delete_categories'))
+                                                        <form id="sup-form"
+                                                            action="{{ route('dashboard.categories.destroy', $category->id) }}"
+                                                            method="POST" style="display: inline-block">
+                                                            {{ csrf_field() }}
+                                                            {{ method_field('delete') }}
+                                                            <a class="dropdown-item delete"
+                                                                href="{{ route('dashboard.categories.destroy', $category->id) }}"><i
+                                                                    class="dw dw-delete-3"></i>
+                                                                Supprimer</a>
+                                                        </form>
+                                                    @else
+                                                        <a class="dropdown-item disabled" href="#"><i
+                                                                class="dw dw-delete-3"></i>
+                                                            Supprimer</a>
+                                                    @endif
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
-
-                        </table><!-- end of table -->
-                        
+                        </table>
                         {{ $categories->appends(request()->query())->links() }}
-                        
                     @else
-                        
-                        <h2>@lang('site.no_data_found')</h2>
-                        
+
+                        <h2>Aucune donnée disponible</h2>
+
                     @endif
+                </div>
+                <!-- end of box -->
 
-                </div><!-- end of box body -->
+            </section><!-- end of content -->
 
-
-            </div><!-- end of box -->
-
-        </section><!-- end of content -->
-
-    </div><!-- end of content wrapper -->
+        </div><!-- end of content wrapper -->
 
 
-@endsection
+    @endsection
